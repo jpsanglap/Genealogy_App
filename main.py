@@ -28,11 +28,11 @@ def add_name():
 
 def search_name():
     person = Person()
-    person.search_person(text="searched")
+    person.search_person(del_flag=False)
 
 def delete_person():
     person = Person()
-    found = person.search_person(text="deleted")
+    found = person.search_person(del_flag=True)
     if found:
         del_or_not = input("Do you want to delete this details? (Y/N): ")
 
@@ -55,7 +55,6 @@ def main():
             search_name()
         elif choice == 3:
             delete_person()
-
         continue_or_not = input("Do you want to do something else? (Y/N): ")
 
         if continue_or_not.lower() == "n":

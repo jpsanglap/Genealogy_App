@@ -1,84 +1,120 @@
 from familytree import FamilyTree
 import json
 
+
 class Person(FamilyTree):
+
+    FAMILY_FILE = "family_data.json"
 
     def __init__(self):
         super().__init__()
 
-
     def create_person(self):
-        person_name = input("Name: ")
-        if person_name == "":
-            print("Need to input name before proceeding...")
-            self.create_person()
+        fname = input("First Name: ").strip()
+        while True:
+            lname = input("Last Name: ").strip()
+            if lname == "":
+                print("Need to input at least surname before proceeding...")
+                continue
+            break
+        super().person_name(fname, lname)
+        person_birthyear = input("Year of birth (YYYY): ")
+        person_birthmonth = input("Month of birth (MMM): ")
+        person_birthday = input("Day of birth (DD): ")
+        super().person_birthdate(person_birthyear, person_birthmonth, person_birthday)
+        person_father = input("Father's Name: ")
+        person_mother = input("Mother's Name: ")
+        super().create_parents(person_father, person_mother)
+        self.print_data()
+
+    def search_person(self, del_flag):
+
+        if not del_flag:
+            text = "searched"
         else:
-            super().person_name(person_name)
-            person_birthdate = input("Birthdate: ")
-            super().person_birthdate(person_birthdate)
-            person_father = input("Father's Name: ")
-            person_mother = input("Mother's Name: ")
-            super().create_parents(person_father, person_mother)
-            self.print_data()
+            text = "deleted"
 
-    def search_person(self,text):
-        search_name = input(f"Enter name to be {text}: ")
-        if search_name == "":
-            print("Need to input name before proceeding...")
-            self.search_person(text)
-            return None
-        else:
-            try:
-                with open("family_data.json", "r") as file:
-                    data = json.load(file)
-            except FileNotFoundError:
-                print("File not available to search.")
-            else:
-                super().person_name(search_name)
-                if self.name in data:
-                    super().person_birthdate(data[self.name]["Birthdate"])
-                    super().create_parents(data[self.name]["Father"], data[self.name]["Mother"])
-                    self.print_data()
-                    return True
-                else:
-                    print(f"{self.name} not found.")
-                    return False
+        while True:
+            search_fname = input(f"Enter first name to be {text}: ").strip()
+            if del_flag and search_fname == "":
+                print("Need first name if you want to delete")
+                continue
 
+            while True:
+                search_lname = input(f"Enter last name to be {text}: ").strip()
+                if search_lname == "":
+                    print("Need to input last name before proceeding...")
+                    continue
+                break
 
-    def save_data(self):
-        data_file = {
-                self.name:
-                    {
-                        "Birthdate": self.birthdate,
-                        "Father": self.father,
-                        "Mother": self.mother
-                    }
-                }
+            break
 
         try:
             with open("family_data.json", "r") as file:
                 data = json.load(file)
+
         except FileNotFoundError:
-            with open("family_data.json", "w") as file:
-                json.dump(data_file, file, indent=4)
+            print("File not available to search.")
         else:
-            data.update(data_file)
-            with open("family_data.json", "w") as file:
+            results = [p for p in data if p["lastname"].lower() == search_lname.lower()]
+            if search_fname != "":
+                results = [p for p in results if p["firstname"].lower() == search_fname.lower()]
+
+            if len(results) > 0:
+                super().person_name(search_fname, search_lname)
+                for person in results:
+                    print(f"First name: {person['firstname']}")
+                    print(f"Last name: {person['lastname']}")
+                    print(f"Birthdate: {person['birthdate']}")
+                    print("Parents are:")
+                    print(f"Father: {person['parents']['father']}")
+                    print(f"Mother: {person['parents']['mother']}")
+                return True
+            else:
+                print(f"{search_fname} {search_lname} not found in file.")
+                return False
+
+    def save_data(self):
+
+        data_file = {
+                "firstname" : self.first_name,
+                "lastname" : self.last_name,
+                "birthdate" : self.birthdate,
+                "parents" : {
+                    "father": self.father,
+                    "mother": self.mother
+                }
+
+            }
+
+        try:
+            with open(self.FAMILY_FILE, "r") as file:
+                data = json.load(file)
+                if not isinstance(data, list):
+                    data = []
+        except FileNotFoundError:
+            data = [data_file]
+            with open(self.FAMILY_FILE, "w") as file:
+                json.dump(data, file, indent=4)
+        else:
+            data.append(data_file)
+            with open(self.FAMILY_FILE, "w") as file:
                 json.dump(data, file, indent=4)
 
     def delete_data(self):
         try:
-            with open("family_data.json", "r") as file:
+            with open(self.FAMILY_FILE, "r") as file:
                 data = json.load(file)
         except FileNotFoundError:
             print("File not available for delete.")
         else:
-            del data[self.name]
+            data = [p for p in data if not (p["firstname"] == self.first_name and
+                                            p["lastname"] == self.last_name)]
             print("Data deleted.")
-            with open("family_data.json", "w") as file:
+            with open(self.FAMILY_FILE, "w") as file:
                 json.dump(data, file, indent=4)
 
 
     def print_data(self):
-        print(f"Name is {self.name} and birthdate is {self.birthdate}")
+        print(f"Name is {self.first_name} {self.last_name} and birthdate is {self.birthdate}")
         print(f"The father's name is {self.father} and mother's name is {self.mother}")

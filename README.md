@@ -1,60 +1,77 @@
-# SALINLAHI: Filipino Genealogy CLI App
+# Salinlahi: A Filipino Genealogy App (CLI Version)
 
-**SALINLAHI** is a simple command-line application that allows users to store, search, and delete basic family history data such as names, birthdates, and parents' names.
-
-This project is intended as an entry-level portfolio project to demonstrate Python fundamentals such as:
-- Object-Oriented Programming (OOP)
-- File I/O using JSON
-- Basic CLI interaction
-- Simple data management
-
----
+**Salinlahi** is a simple command-line interface (CLI) application written in Python for building a family history tree tailored for Filipino users. It allows you to input and manage basic genealogical data such as names, birthdates, and parents, and stores this data in a JSON file.
 
 ## Features
 
-- ✅ Add a person's name, birthdate, and parents
-- 🔍 Search for an existing person in the JSON file
-- ❌ Delete a person’s information if found
+- Add a person's name, birthdate, and parent names
+- Search for a person by first and/or last name
+- Delete a person's record
+- Save all entries in a JSON file
+- Flexible birthdate entry: supports full date, month-year, year only, or unknown
 
----
+## File Structure
 
-## Getting Started
+- `main.py` – Entry point for the CLI application
+- `create_person.py` – Handles creating, saving, deleting, and searching for a person
+- `familytree.py` – Defines the FamilyTree class structure
+- `tree_image.py` – Contains an ASCII image for app branding
+- `family_data.json` – JSON file where all data is stored (created after first save)
 
-### Requirements
+## How to Run
 
-- Python 3.x
+1. Make sure you have Python 3 installed.
+2. Clone or download this repository.
+3. In your terminal or command prompt, run:
 
-### How to Run
-
-1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/salinlahi.git
-   cd salinlahi
-Run the app:
+   python main.py
+Follow the on-screen prompts to:
 
-bash
-python main.py
-File Structure
-main.py - Entry point of the app
+Add a new person
 
-create_person.py - Handles creating, searching, saving, and deleting person data
+Search for an existing person
 
-familytree.py - Base class that stores common attributes
+Delete a person
 
-tree_image.py - Stores an ASCII art or intro image used in the CLI
+Date Entry Guidelines
+Input format for birthdate:
 
-family_data.json - Local storage file (created automatically after saving a person)
+Year only: YYYY
 
+Month and year: MMM and YYYY
+
+Complete date: DD, MMM, YYYY
+
+Leave fields blank if unknown.
+
+Example:
+
+Year of birth (YYYY): 1980
+Month of birth (MMM): Aug
+Day of birth (DD): (leave blank)
+This will be saved as: Aug-1980
+
+Sample Data Format
+
+{
+  "firstname": "Juan",
+  "lastname": "Dela Cruz",
+  "birthdate": "1980",
+  "parents": {
+    "father": "Pedro Dela Cruz",
+    "mother": "Maria Santos"
+  }
+}
 Future Plans
-Add support for displaying family relationships (parents-children tree)
+Convert this app to a Flask-based web application
 
-Improve data validation (dates, duplicate entries, etc.)
+Use a database (like SQLite or PostgreSQL) instead of JSON
 
-Add export options (e.g., CSV, visual family tree)
+Add visual family tree generation
 
-Optional GUI using Tkinter or web version with Flask
-
-License
-This project is open source and available under the MIT License.
-
+Author
+David John Paul Sanglap
+Filipino Genealogist | Software Developer
+📚 Author of Ninuno: Searching Your Filipino Ancestors
 
