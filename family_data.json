@@ -1,0 +1,29 @@
+[
+    {
+        "firstname": "Ryan",
+        "lastname": "Reynolds",
+        "birthdate": "12-Jun-1976",
+        "parents": {
+            "father": "Bryan Reynolds",
+            "mother": "Vivian Reynolds"
+        }
+    },
+    {
+        "firstname": "Tom",
+        "lastname": "Cruise",
+        "birthdate": "1967",
+        "parents": {
+            "father": "Ship Cruise",
+            "mother": "Vivian"
+        }
+    },
+    {
+        "firstname": "Bruce",
+        "lastname": "Wayne",
+        "birthdate": "",
+        "parents": {
+            "father": "Thomas Wayne",
+            "mother": "Martha Wayne"
+        }
+    }
+]
